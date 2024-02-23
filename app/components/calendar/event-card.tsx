@@ -12,7 +12,7 @@ export const EventCard = () => {
   };
   return (
     <div
-      className='p-5 absolute top-80 left-56 w-4/5 bg-[#F25D23]/10 border-2 border-[#F25D23]/50 rounded-xl'
+      className='p-5 absolute top-80 left-48 w-3/4 bg-[#F25D23]/10 border-2 border-[#F25D23]/50 rounded-xl'
       onClick={handleCardClick}
     >
       <div className='flex gap-2 items-start'>
