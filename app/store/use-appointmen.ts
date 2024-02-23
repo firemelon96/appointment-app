@@ -10,11 +10,12 @@ interface ApprointmentStore {
 
 export const useAppointment = create<ApprointmentStore>((set) => ({
   isOpen: false,
-  isEditing: true,
+  isEditing: false,
   onOpen: () =>
     set(() => ({
       isOpen: true,
+      isEditing: false,
     })),
-  onClose: () => set(() => ({ isOpen: false })),
-  onEdit: () => set(() => ({ isEditing: true })),
+  onClose: () => set(() => ({ isOpen: false, isEditing: false })),
+  onEdit: () => set(() => ({ isEditing: true, isOpen: true })),
 }));

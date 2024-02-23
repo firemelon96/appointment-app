@@ -16,7 +16,9 @@ export const Form = () => {
         <div className='text-xl'>
           <select name='' id='' className='p-2 w-full rounded-xl'>
             {services.map((service) => (
-              <option value={service}>{service}</option>
+              <option key={service} value={service}>
+                {service}
+              </option>
             ))}
           </select>
         </div>
@@ -35,8 +37,10 @@ export const Form = () => {
         <input type='text' />
         <label htmlFor='vet'>Veterenary name</label>
         <select name='clinic' id=''>
-          {veterenary.map((vet) => (
-            <option value={vet.building}>{vet.veterinary_name}</option>
+          {veterenary.map((vet, i) => (
+            <option key={i} value={vet.building}>
+              {vet.veterinary_name}
+            </option>
           ))}
         </select>
         <label htmlFor='pet'>Pet name</label>

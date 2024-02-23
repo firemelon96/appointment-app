@@ -7,7 +7,7 @@ import { BackIcon } from '@/public/icons/back-icon';
 import { NextIcon } from '@/public/icons/nextIcon';
 
 export const View = () => {
-  const { onOpen } = useAppointment((state) => state);
+  const { onEdit } = useAppointment((state) => state);
   const [currentDate, setCurrentDate] = useState(new Date());
 
   const prev = () => {
@@ -19,7 +19,7 @@ export const View = () => {
   };
 
   const handleAppointmenClick = () => {
-    onOpen();
+    onEdit();
   };
 
   const today = isToday(currentDate);
