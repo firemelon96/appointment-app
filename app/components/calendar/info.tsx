@@ -54,16 +54,16 @@ export const Info = () => {
               name='Brownie'
               entity='Dog'
             />
-            <div className='flex flex-col gap-2 w-full px-10 py-7'>
-              <Button primary onClick={() => {}}>
-                Reschedule Appointment
-              </Button>
-              <Button onClick={() => {}}>Cancel Appointment</Button>
-            </div>
           </div>
         ) : (
           <Form />
         )}
+        <div className='flex flex-col gap-2 w-full px-10 py-7'>
+          <Button primary onClick={() => {}}>
+            {!isEditing ? 'Reschedule Appointment' : 'Add Appointment'}
+          </Button>
+          <Button onClick={() => {}}>Cancel Appointment</Button>
+        </div>
       </div>
     </div>
   );
