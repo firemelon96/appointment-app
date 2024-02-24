@@ -13,17 +13,17 @@ export const Info = () => {
 
   return (
     <div
-      className={` bg-gray-200 border-l-2 border-gray-300 col-span-1 ${
+      className={`bg-gray-200 border-l-2 border-gray-300 col-span-1 ${
         !isOpen && 'hidden'
       }`}
     >
       <div
-        className='fixed w-fit h-dvh overflow-y-scroll overflow-x-hidden'
+        className='fixed h-dvh overflow-y-scroll overflow-x-hidden'
         style={{ height: 'calc(100vh - 116px)' }}
       >
         {!isEditing ? (
           <div className='relative overflow-y-auto'>
-            <div className='flex items-center px-10 overflow-y-auto py-7 border-b-2 border-b-gray-300'>
+            <div className='flex items-center px-10 py-7 border-b-2 border-b-gray-300'>
               <Avatar
                 name='Chrees Lee'
                 position='Client '
@@ -33,7 +33,6 @@ export const Info = () => {
                 alt='profile'
                 className='w-20 h-20 rounded-full overflow-hidden object-cover'
               />
-
               <button className='ml-auto text-gray-800'>
                 <VerticalIcon stroke='gray' />
               </button>
@@ -58,12 +57,6 @@ export const Info = () => {
         ) : (
           <Form />
         )}
-        <div className='flex flex-col gap-2 w-full px-10 py-7'>
-          <Button primary onClick={() => {}}>
-            {!isEditing ? 'Reschedule Appointment' : 'Add Appointment'}
-          </Button>
-          <Button onClick={() => {}}>Cancel Appointment</Button>
-        </div>
       </div>
     </div>
   );

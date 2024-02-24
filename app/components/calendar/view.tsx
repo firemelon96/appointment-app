@@ -1,4 +1,11 @@
-import { addMonths, format, isToday, subMonths } from 'date-fns';
+import {
+  addDays,
+  addMonths,
+  format,
+  isToday,
+  subDays,
+  subMonths,
+} from 'date-fns';
 import { useState } from 'react';
 import { Button } from '../button';
 import { useAppointment } from '@/app/store/use-appointmen';
@@ -11,11 +18,11 @@ export const View = () => {
   const [currentDate, setCurrentDate] = useState(new Date());
 
   const prev = () => {
-    setCurrentDate(subMonths(currentDate, 1));
+    setCurrentDate(subDays(currentDate, 1));
   };
 
   const next = () => {
-    setCurrentDate(addMonths(currentDate, 1));
+    setCurrentDate(addDays(currentDate, 1));
   };
 
   const handleAppointmenClick = () => {
@@ -54,7 +61,7 @@ export const View = () => {
           </Button>
         </div>
       </div>
-      <DayView />
+      <DayView currentDate={currentDate} />
     </div>
   );
 };
