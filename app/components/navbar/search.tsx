@@ -3,6 +3,7 @@ import { useEvent } from '@/app/store/use-event';
 import Image from 'next/image';
 import { useState } from 'react';
 import { EventCard } from '../calendar/event-card';
+import { format } from 'date-fns';
 
 export const Search = () => {
   const [searchQuery, setsearchQuery] = useState('');
@@ -69,6 +70,13 @@ export const Search = () => {
                 >
                   {event.service}
                 </h1>
+                <span
+                  className={`${
+                    event.service === 'Vaccination' && 'text-[#F25D23]/50'
+                  } ${event.service === 'Consultation' && 'text-[#9747FF]/50'}`}
+                >
+                  {format(event.startTime, 'EEEE, MMMM d, y')}
+                </span>
                 <span
                   className={`${
                     event.service === 'Vaccination' && 'text-[#F25D23]/50'
