@@ -104,7 +104,3 @@ export const useEvent = create<EventStore>((set) => ({
     })),
   clearEvent: () => set(() => ({ event: null })),
 }));
-
-export const getSingleEventById = (id: string) => {
-  return useEvent((state) => state.events.find((event) => event.id === id));
-};
