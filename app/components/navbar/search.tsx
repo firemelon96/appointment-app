@@ -51,6 +51,7 @@ export const Search = () => {
                   setDate(event.startTime);
                   setSearch(false);
                 }}
+                key={event.id}
                 className={`flex cursor-pointer flex-col p-2 m-3 ${
                   event.service === 'Vaccination' &&
                   'bg-[#F25D23]/10 border-2 border-[#F25D23]/50'
