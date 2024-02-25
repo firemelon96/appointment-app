@@ -23,11 +23,7 @@ export const Search = () => {
     setSearch(true);
   };
 
-  const handleClick = (startTime: string) => {
-    console.log(startTime);
-    setDate(startTime);
-    setSearch(false);
-  };
+  console.log(searchEvents(searchQuery));
 
   return (
     <>
