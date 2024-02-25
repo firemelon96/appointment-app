@@ -15,6 +15,13 @@ interface InfoCardProps {
   label: string;
   isPet?: boolean;
   imgUrl?: string;
+  email?: string;
+  phone?: string;
+  address?: string;
+  breed?: string;
+  age?: string;
+  sex?: string;
+  birthday?: string;
 }
 
 export const InfoCard = ({
@@ -24,6 +31,13 @@ export const InfoCard = ({
   label,
   isPet,
   imgUrl,
+  email,
+  phone,
+  address,
+  breed,
+  age,
+  sex,
+  birthday,
 }: InfoCardProps) => {
   return (
     <div className='flex flex-col gap-2 px-10 py-5 border-b-2 border-b-gray-300'>
@@ -77,22 +91,19 @@ export const InfoCard = ({
             </>
           )}
         </div>
-        <div className='col-span-2 flex flex-col gap-2 text-gray-600'>
+        <div className='col-span-2 flex flex-col truncate gap-2 text-gray-600'>
           {isPet ? (
             <>
-              <p>French Bulldog</p>
-              <p>Male</p>
-              <p>10 months</p>
-              <p>January 12, 2023</p>
+              <p>{breed}</p>
+              <p>{sex}</p>
+              <p>{age}</p>
+              <p>{birthday}</p>
             </>
           ) : (
             <>
-              <p>chrissielee@gmail.com</p>
-              <p>+01 234 567 8910</p>
-              <p>
-                1st Avenue, Golden Street,Springville Village, San Diego,
-                California
-              </p>
+              <p>{email}</p>
+              <p>{phone}</p>
+              <p>{address}</p>
             </>
           )}
         </div>

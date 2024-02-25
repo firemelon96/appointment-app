@@ -1,37 +1,28 @@
 'use client';
-import React, { useEffect, useState } from 'react';
-import { format, startOfDay, addHours, differenceInMinutes } from 'date-fns';
+import React, { useEffect } from 'react';
+import { format, startOfDay, addHours } from 'date-fns';
 import { useAppointment } from '@/app/store/use-appointmen';
 import { EventCard } from './event-card';
 import { useEvent } from '@/app/store/use-event';
-import { AppointmentSchema } from '@/lib/types';
-import { generateHours } from '@/lib/generate-hours';
 
 interface DayViewProps {
   currentDate: Date;
 }
 
 const DayView = ({ currentDate }: DayViewProps) => {
-  const { onOpen, onEdit } = useAppointment((state) => state);
-  const { events } = useEvent((state) => state);
+  const { showForm } = useAppointment((state) => state);
+  const { events, clearEvent } = useEvent((state) => state);
 
-  // Create an array of hours from 0 to 23
   const hours = Array.from({ length: 24 }, (_, i) => i);
-  // const hours = generateHours(currentDate);
+  useEffect(() => {
+    events.map((event) => {
+      const utcDate = new Date(event.startTime).getUTCDate();
+      const utcMonth = new Date(event.startTime).getUTCMonth();
+      const utcYear = new Date(event.startTime).getUTCFullYear();
+      console.log(`${utcMonth} ${utcDate}, ${utcYear}`);
+    });
+  }, [events]);
 
-  // console.log(hours);
-
-  // const filterEventsForDate = (events, date) => {
-  //   return events.filter((event) => {
-  //     const eventDate = startOfDay(event.date);
-  //     return eventDate.getTime() === startOfDay(date).getTime();
-  //   });
-  // };
-
-  console.log(currentDate);
-  console.log(events);
-
-  //filter to show the event on relevant day
   const dayEvents = events.filter((event) => {
     const date = new Date(event.startTime);
     const eventDate = `${date.getMonth()} ${date.getDay()}`;
@@ -40,14 +31,15 @@ const DayView = ({ currentDate }: DayViewProps) => {
   });
 
   const handelDoubleClick = () => {
-    // onEdit();
+    showForm();
+    clearEvent();
   };
 
   return (
     <div className=' bg-gray-200'>
       {hours.map((hour, index) => (
         <div
-          // onDoubleClick={handelDoubleClick}
+          onDoubleClick={handelDoubleClick}
           key={hour}
           className='relative py-10 border-b-2 border-b-gray-300 text-gray-500 cursor-pointer'
         >
@@ -56,10 +48,9 @@ const DayView = ({ currentDate }: DayViewProps) => {
           </span>
           <div className='absolute top-0 left-40 border-r-2 -z-[5px] border-r-gray-300 h-full'></div>
 
-          {/* You can put your events or other content for each hour here */}
           {dayEvents?.map((event) => (
             <EventCard
-              key={event.startTime}
+              key={event.id}
               service={event.service}
               clientName={event.clientName}
               startTime={event.startTime}
@@ -67,10 +58,9 @@ const DayView = ({ currentDate }: DayViewProps) => {
               index={index}
               hour={hour}
               currentDate={currentDate}
-              dayEvents={dayEvents}
+              id={event.id}
             />
           ))}
-          {/* <EventCard services='Vaccination' /> */}
         </div>
       ))}
     </div>

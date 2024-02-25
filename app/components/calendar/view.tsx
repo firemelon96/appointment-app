@@ -1,21 +1,19 @@
-import {
-  addDays,
-  addMonths,
-  format,
-  isToday,
-  subDays,
-  subMonths,
-} from 'date-fns';
+import { addDays, format, isToday, subDays } from 'date-fns';
 import { useState } from 'react';
 import { Button } from '../button';
 import { useAppointment } from '@/app/store/use-appointmen';
 import DayView from './day-view';
 import { BackIcon } from '@/public/icons/back-icon';
 import { NextIcon } from '@/public/icons/nextIcon';
+import { useEvent } from '@/app/store/use-event';
+import { useCalendar } from '@/app/store/use-calendar';
 
 export const View = () => {
-  const { onEdit } = useAppointment((state) => state);
-  const [currentDate, setCurrentDate] = useState(new Date());
+  const { showForm } = useAppointment((state) => state);
+  const { date } = useCalendar((state) => state);
+  const [currentDate, setCurrentDate] = useState(date);
+
+  const { clearEvent } = useEvent((state) => state);
 
   const prev = () => {
     setCurrentDate(subDays(currentDate, 1));
@@ -26,7 +24,8 @@ export const View = () => {
   };
 
   const handleAppointmenClick = () => {
-    onEdit();
+    showForm();
+    clearEvent();
   };
 
   const today = isToday(currentDate);
@@ -51,10 +50,6 @@ export const View = () => {
             <p>{format(currentDate, 'EEEE, MMMM d, y')}</p>
           )}
         </div>
-        {/* <div className='flex'>
-          <button className='p-2 bg-gray-400 rounded-l-md'>Day</button>
-          <button className='p-2 bg-gray-400 rounded-r-md'>Month</button>
-        </div> */}
         <div className='text-white'>
           <Button primary onClick={handleAppointmenClick}>
             New Appointment

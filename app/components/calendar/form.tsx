@@ -6,29 +6,77 @@ import { useEvent } from '@/app/store/use-event';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { AppointmentSchema, appointmentSchema } from '@/lib/types';
 import { useAppointment } from '@/app/store/use-appointmen';
+import { v4 as uuidv4 } from 'uuid';
 
 export const servicesENUM = {
   SERVICE_1: 'Consultation',
   SERVICE_2: 'Vaccination',
 };
 
-export const Form = () => {
-  const { addEvent, events } = useEvent((state) => state);
+interface FormProps {
+  event: AppointmentSchema;
+  isEditing: boolean;
+}
+
+export const Form = ({ event, isEditing }: FormProps) => {
+  const { addEvent, events, updateEvent, clearEvent } = useEvent(
+    (state) => state
+  );
   const { onClose } = useAppointment((state) => state);
 
   const {
     handleSubmit,
     register,
     formState: { errors, isLoading },
+    reset,
+    setValue,
   } = useForm<AppointmentSchema>({
     resolver: zodResolver(appointmentSchema),
+    defaultValues: {
+      service: event?.service,
+      startTime: event?.startTime,
+      endTime: event?.endTime,
+      clientName: event?.clientName,
+      phone: event?.phone,
+      address: event?.address,
+      email: event?.email,
+      vetName: event?.vetName,
+      petName: event?.petName,
+      breed: event?.breed,
+      age: event?.age,
+      gender: event?.gender,
+      imageUrl: event?.imageUrl,
+      vetAddress: event?.vetAddress,
+      building: event?.building,
+      contact: event?.contact,
+      bldgUrl: event?.bldgUrl,
+      birthday: event?.birthday,
+    },
   });
+
+  const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const selectedName = e.target.value;
+    const selectedData = veterenary.find(
+      (item) => item.veterinary_name === selectedName
+    );
+    setValue('vetName', selectedName);
+    setValue('vetAddress', selectedData?.address || '');
+    setValue('building', selectedData?.building || '');
+    setValue('contact', selectedData?.contact_number || '');
+    setValue('bldgUrl', selectedData?.imgUrl || '');
+  };
 
   const initialValues = Object.values(servicesENUM);
 
   const onSubmit = (data: AppointmentSchema) => {
+    if (isEditing) {
+      updateEvent(data.id, data);
+      clearEvent();
+    } else {
+      addEvent(data);
+      clearEvent();
+    }
     console.log(data);
-    addEvent(data);
     onClose();
   };
 
@@ -42,6 +90,7 @@ export const Form = () => {
         className='flex w-full flex-col text-gray-500'
       >
         <div className='space-y-3'>
+          <input type='text' hidden value={uuidv4()} {...register('id')} />
           <div className='text-lg'>
             <select
               {...register('service')}
@@ -56,16 +105,14 @@ export const Form = () => {
           </div>
           <span className='flex flex-col gap-2'>
             <input
-              defaultValue={format(new Date(), 'HH:mm')}
-              // defaultValue={format(new Date(), 'yyyy-MM-dd HH:mm')}
-              // type='datetime-local'
+              defaultValue={format(new Date(), 'yyyy-MM-dd HH:mm')}
               type='datetime-local'
               {...register('startTime')}
               className='w-full px-2 p-1 rounded-xl'
             />
             {errors.startTime && <span>{errors.startTime.message}</span>}
             <input
-              defaultValue={format(new Date(), 'HH:mm')}
+              defaultValue={format(new Date(), 'yyyy-MM-dd HH:mm')}
               type='datetime-local'
               {...register('endTime', {
                 required: 'End is required',
@@ -86,6 +133,14 @@ export const Form = () => {
             })}
             className='w-full p-1 rounded-xl px-2'
             placeholder='Name'
+          />
+          <input
+            type='number'
+            {...register('phone', {
+              required: 'Phone is required',
+            })}
+            className='w-full p-1 rounded-xl px-2'
+            placeholder='Phone'
           />
           <input
             type='email'
@@ -112,6 +167,7 @@ export const Form = () => {
           <select
             {...register('vetName')}
             className='p-1 px-2 w-full rounded-xl'
+            onChange={handleSelectChange}
           >
             {veterenary.map((vet, i) => (
               <option key={i} value={vet.veterinary_name}>
@@ -119,6 +175,34 @@ export const Form = () => {
               </option>
             ))}
           </select>
+          <input
+            type='text'
+            {...register('vetAddress')}
+            className='w-full p-1 rounded-xl px-2'
+            placeholder='Address'
+            disabled
+          />
+          <input
+            type='text'
+            {...register('building')}
+            className='w-full p-1 rounded-xl px-2'
+            placeholder='Building'
+            disabled
+          />
+          <input
+            type='text'
+            {...register('contact')}
+            className='w-full p-1 rounded-xl px-2'
+            placeholder='Contact'
+            disabled
+          />
+          <input
+            type='text'
+            {...register('bldgUrl')}
+            className='w-full p-1 rounded-xl px-2'
+            placeholder='URL'
+            disabled
+          />
         </div>
         <br />
         <span className='border-t-2 text-gray-600 border-t-gray-300 text-lg py-2'>
@@ -159,6 +243,14 @@ export const Form = () => {
             placeholder='Gender'
           />
           <input
+            type='date'
+            {...register('birthday', {
+              required: 'Birthday is required',
+            })}
+            className='w-full p-1 rounded-xl px-2'
+            placeholder='Birtday'
+          />
+          <input
             type='text'
             {...register('imageUrl', {
               required: 'Image url is required',
@@ -173,12 +265,12 @@ export const Form = () => {
             disabled={isLoading}
             type='submit'
           >
-            Add Appointment
+            {isEditing ? 'Update Appointment' : 'Add Appointment'}
           </button>
         </div>
       </form>
       <div className='flex flex-col gap-2 w-full text-white py-7'>
-        <Button onClick={() => {}}>Cancel Appointment</Button>
+        <Button onClick={() => reset()}>Cancel Appointment</Button>
       </div>
     </div>
   );

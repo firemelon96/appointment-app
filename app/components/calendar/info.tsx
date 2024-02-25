@@ -7,9 +7,17 @@ import { Button } from '../button';
 import { VerticalIcon } from '@/public/icons/vertical-icon';
 import { useState } from 'react';
 import { Form } from './form';
+import { useEvent } from '@/app/store/use-event';
 
 export const Info = () => {
-  const { isOpen, isEditing } = useAppointment((state) => state);
+  const { isOpen, isEditing, isShow, onEdit, onClose, showForm } =
+    useAppointment((state) => state);
+  const { event } = useEvent((state) => state);
+
+  const handleEdit = () => {
+    // showForm();
+    onEdit();
+  };
 
   return (
     <div
@@ -18,14 +26,14 @@ export const Info = () => {
       }`}
     >
       <div
-        className='fixed h-dvh overflow-y-scroll overflow-x-hidden'
+        className='fixed h-dvh overflow-y-scroll'
         style={{ height: 'calc(100vh - 116px)' }}
       >
-        {!isEditing ? (
-          <div className='relative overflow-y-auto'>
+        {!isEditing && event ? (
+          <div className='relative w-auto overflow-y-auto'>
             <div className='flex items-center px-10 py-7 border-b-2 border-b-gray-300'>
               <Avatar
-                name='Chrees Lee'
+                name={event?.clientName}
                 position='Client '
                 src='/pic.png'
                 width={80}
@@ -37,12 +45,20 @@ export const Info = () => {
                 <VerticalIcon stroke='gray' />
               </button>
             </div>
-            <InfoCard label='Contact Information' />
+            <InfoCard
+              label='Contact Information'
+              email={event.email}
+              address={event.address}
+              phone={event.phone}
+            />
             <InfoCard
               withAvatar
               imgUrl='/bldg.jpeg'
-              name='Silvervale Towers'
-              entity='Los Angeles'
+              name={event.vetName}
+              entity={event.building}
+              email='client@gmail.com'
+              address={event.vetAddress}
+              phone={event.contact}
               label='Clinic Details'
             />
             <InfoCard
@@ -50,12 +66,31 @@ export const Info = () => {
               isPet
               imgUrl='/dog.jpeg'
               withAvatar
-              name='Brownie'
+              name={event.petName}
               entity='Dog'
+              breed={event.breed}
+              sex={event.gender}
+              age={event.age}
+              birthday={event.endTime}
             />
+
+            <div className='flex w-full flex-col gap-4 p-10'>
+              <button
+                className='flex items-center justify-center bg-orange-400 px-4 py-2 w-full rounded-md'
+                onClick={handleEdit}
+              >
+                Reschedule Appointment
+              </button>
+              <button
+                className='flex border border-gray-500 text-gray-500 items-center justify-center bg-transparent px-4 py-2 w-full rounded-md'
+                onClick={() => onClose()}
+              >
+                Cancel Appoinment
+              </button>
+            </div>
           </div>
         ) : (
-          <Form />
+          <Form event={event!} isEditing={isEditing} />
         )}
       </div>
     </div>
