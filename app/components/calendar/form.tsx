@@ -27,7 +27,7 @@ export const Form = () => {
   const initialValues = Object.values(servicesENUM);
 
   const onSubmit = (data: AppointmentSchema) => {
-    // console.log(data);
+    console.log(data);
     addEvent(data);
     onClose();
   };
@@ -59,14 +59,14 @@ export const Form = () => {
               defaultValue={format(new Date(), 'HH:mm')}
               // defaultValue={format(new Date(), 'yyyy-MM-dd HH:mm')}
               // type='datetime-local'
-              type='time'
+              type='datetime-local'
               {...register('startTime')}
               className='w-full px-2 p-1 rounded-xl'
             />
             {errors.startTime && <span>{errors.startTime.message}</span>}
             <input
               defaultValue={format(new Date(), 'HH:mm')}
-              type='time'
+              type='datetime-local'
               {...register('endTime', {
                 required: 'End is required',
               })}

@@ -1,4 +1,4 @@
-import { addHours, format, startOfDay } from 'date-fns';
+import { addHours } from 'date-fns';
 
 export const generateHours = (dateTime: Date) => {
   // const startOfGivenDay = startOfDay(dateTime);

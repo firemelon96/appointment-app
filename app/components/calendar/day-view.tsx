@@ -16,10 +16,27 @@ const DayView = ({ currentDate }: DayViewProps) => {
   const { events } = useEvent((state) => state);
 
   // Create an array of hours from 0 to 23
-  // const hours = Array.from({ length: 24 }, (_, i) => i);
-  const hours = generateHours(currentDate);
+  const hours = Array.from({ length: 24 }, (_, i) => i);
+  // const hours = generateHours(currentDate);
 
-  console.log(hours);
+  // console.log(hours);
+
+  // const filterEventsForDate = (events, date) => {
+  //   return events.filter((event) => {
+  //     const eventDate = startOfDay(event.date);
+  //     return eventDate.getTime() === startOfDay(date).getTime();
+  //   });
+  // };
+
+  console.log(currentDate);
+  console.log(events);
+
+  const filteredEvents = events.filter((event) => {
+    const date = new Date(event.startTime);
+    const eventDate = `${date.getMonth()} ${date.getDay()}`;
+    const dateView = `${currentDate.getMonth()} ${currentDate.getDay()}`;
+    return eventDate === dateView;
+  });
 
   const handelDoubleClick = () => {
     // onEdit();
@@ -39,30 +56,36 @@ const DayView = ({ currentDate }: DayViewProps) => {
           <div className='absolute top-0 left-40 border-r-2 -z-[5px] border-r-gray-300 h-full'></div>
 
           {/* You can put your events or other content for each hour here */}
-          {events?.map((event) => {
-            const start = +event.startTime.split(':')[0];
-            const end = +event.endTime.split(':')[0];
-            const matchingEvent = events.find(
-              (event) => +event.startTime.split(':')[0] === index
-            );
+          {filteredEvents?.map((event) => {
+            const start = +event.startTime.split('T')[1].split(':')[0];
+            const end = +event.endTime.split('T')[1].split(':')[0];
+            // const matchingEvent = filteredEvents.find(
+            //   (event) => +event.startTime.split('T')[1].split(':')[0] === index
+            // );
+
+            const matchingEvent = start === index;
 
             if (start <= hour && end > hour) {
               const eventDuration = differenceInMinutes(
-                addHours(startOfDay(new Date()), end),
-                addHours(startOfDay(new Date()), start)
+                addHours(startOfDay(currentDate), end),
+                addHours(startOfDay(currentDate), start)
               );
+
               console.log(eventDuration);
               return (
                 <div
                   key={event.service}
                   className='left-48 absolute w-[80%] top-10  bg-orange-300 p-2'
                   style={{
-                    height: `${eventDuration + 60}px`,
+                    height: `${
+                      eventDuration > 60 ? eventDuration : eventDuration * 2
+                    }px`,
                   }}
                 >
                   {matchingEvent && (
                     <span className=''>
-                      {event.startTime} - {event.endTime}
+                      {format(event.startTime, 'hh:ss a')} -{' '}
+                      {format(event.endTime, 'hh:ss a')}
                     </span>
                   )}
                 </div>
