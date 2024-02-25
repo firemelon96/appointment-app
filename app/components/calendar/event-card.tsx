@@ -7,13 +7,14 @@ import { VerticalIcon } from '@/public/icons/vertical-icon';
 import { addHours, differenceInMinutes, format, startOfDay } from 'date-fns';
 
 interface EventCardProps {
-  service: 'Consultation' | 'Vaccination';
+  service: string;
   clientName: string;
   startTime: string;
   endTime: string;
   index: number;
   hour: number;
-  currentDate: string;
+  currentDate: Date;
+  dayEvents: AppointmentSchema[];
 }
 
 export const EventCard = ({
@@ -24,6 +25,7 @@ export const EventCard = ({
   index,
   hour,
   currentDate,
+  dayEvents,
 }: EventCardProps) => {
   const { onOpen } = useAppointment((state) => state);
 
@@ -34,9 +36,16 @@ export const EventCard = ({
   const start = +startTime.split('T')[1].split(':')[0];
   const end = +endTime.split('T')[1].split(':')[0];
   const matchingEvent = start === index;
+  // const matchingEvent = dayEvents.find(
+  //   (event) => +event.startTime <= index && +event.endTime > hour
+  // );
+
+  console.log(matchingEvent);
 
   const consultation = service === 'Consultation';
   const vaccination = service === 'Vaccination';
+
+  console.log(start, hour, end, hour);
 
   if (start <= hour && end > hour) {
     const eventDuration = differenceInMinutes(
@@ -44,14 +53,22 @@ export const EventCard = ({
       addHours(startOfDay(currentDate), start)
     );
 
+    // const eventStartTime = addHours(startOfDay(currentDate), start);
+    // const minutesFromStartOfDay = differenceInMinutes(
+    //   eventStartTime,
+    //   startOfDay(new Date())
+    // );
+    // const top = minutesFromStartOfDay / 60; // Convert minutes to hours
+
     return (
       <div
-        className={`p-2 absolute left-48 w-[81%] ${
-          consultation && 'bg-[#F25D23]/10 border-2 border-[#F25D23]/50'
+        className={`p-2 h-full absolute left-48 w-[81%] ${
+          vaccination && 'bg-[#F25D23]/10 border-2 border-[#F25D23]/50'
         } ${
-          vaccination && 'bg-[#9747FF]/10 border-2 border-[#9747FF]/50'
+          consultation && 'bg-[#9747FF]/10 border-2 border-[#9747FF]/50'
         } rounded-xl`}
         onClick={handleCardClick}
+        // style={{ height: `${eventDuration}px` }}
       >
         {matchingEvent && (
           <div className='flex gap-2 items-start'>

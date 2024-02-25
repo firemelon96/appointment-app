@@ -31,7 +31,8 @@ const DayView = ({ currentDate }: DayViewProps) => {
   console.log(currentDate);
   console.log(events);
 
-  const filteredEvents = events.filter((event) => {
+  //filter to show the event on relevant day
+  const dayEvents = events.filter((event) => {
     const date = new Date(event.startTime);
     const eventDate = `${date.getMonth()} ${date.getDay()}`;
     const dateView = `${currentDate.getMonth()} ${currentDate.getDay()}`;
@@ -56,43 +57,19 @@ const DayView = ({ currentDate }: DayViewProps) => {
           <div className='absolute top-0 left-40 border-r-2 -z-[5px] border-r-gray-300 h-full'></div>
 
           {/* You can put your events or other content for each hour here */}
-          {filteredEvents?.map((event) => {
-            const start = +event.startTime.split('T')[1].split(':')[0];
-            const end = +event.endTime.split('T')[1].split(':')[0];
-            // const matchingEvent = filteredEvents.find(
-            //   (event) => +event.startTime.split('T')[1].split(':')[0] === index
-            // );
-
-            const matchingEvent = start === index;
-
-            if (start <= hour && end > hour) {
-              const eventDuration = differenceInMinutes(
-                addHours(startOfDay(currentDate), end),
-                addHours(startOfDay(currentDate), start)
-              );
-
-              console.log(eventDuration);
-              return (
-                <div
-                  key={event.service}
-                  className='left-48 absolute w-[80%] top-10  bg-orange-300 p-2'
-                  style={{
-                    height: `${
-                      eventDuration > 60 ? eventDuration : eventDuration * 2
-                    }px`,
-                  }}
-                >
-                  {matchingEvent && (
-                    <span className=''>
-                      {format(event.startTime, 'hh:ss a')} -{' '}
-                      {format(event.endTime, 'hh:ss a')}
-                    </span>
-                  )}
-                </div>
-              );
-            }
-            return null;
-          })}
+          {dayEvents?.map((event) => (
+            <EventCard
+              key={event.startTime}
+              service={event.service}
+              clientName={event.clientName}
+              startTime={event.startTime}
+              endTime={event.endTime}
+              index={index}
+              hour={hour}
+              currentDate={currentDate}
+              dayEvents={dayEvents}
+            />
+          ))}
           {/* <EventCard services='Vaccination' /> */}
         </div>
       ))}
