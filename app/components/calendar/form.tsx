@@ -71,16 +71,11 @@ export const Form = ({ event, isEditing }: FormProps) => {
   const onSubmit = (data: AppointmentSchema) => {
     if (isEditing) {
       updateEvent(data.id, data);
-      clearEvent();
     } else {
       addEvent(data);
-      clearEvent();
     }
-    console.log(data);
     onClose();
   };
-
-  console.log(events);
 
   return (
     <div className='relative w-full px-10 pb-10'>

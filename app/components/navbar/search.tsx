@@ -2,7 +2,6 @@ import { useCalendar } from '@/app/store/use-calendar';
 import { useEvent } from '@/app/store/use-event';
 import Image from 'next/image';
 import { useState } from 'react';
-import { EventCard } from '../calendar/event-card';
 import { format } from 'date-fns';
 
 export const Search = () => {
@@ -18,12 +17,9 @@ export const Search = () => {
 
   const handleSearch = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault();
-    console.log('search');
     searchEvents(searchQuery);
     setSearch(true);
   };
-
-  console.log(searchEvents(searchQuery));
 
   return (
     <>

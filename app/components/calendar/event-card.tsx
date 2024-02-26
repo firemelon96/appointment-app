@@ -1,6 +1,5 @@
 import { useAppointment } from '@/app/store/use-appointmen';
 import { useEvent } from '@/app/store/use-event';
-import { AppointmentSchema } from '@/lib/types';
 import { ConsultationIcon } from '@/public/icons/consultation-icon';
 import { InjectIcon } from '@/public/icons/inject-icon';
 import { UserIcon } from '@/public/icons/user-icon';
@@ -17,7 +16,6 @@ interface EventCardProps {
   hour: number;
   currentDate: Date;
   id: string;
-  // dayEvents: AppointmentSchema[];
 }
 
 export const EventCard = ({
@@ -51,28 +49,16 @@ EventCardProps) => {
   const start = +startTime.split('T')[1].split(':')[0];
   const end = +endTime.split('T')[1].split(':')[0];
   const matchingEvent = start === index;
-  // const matchingEvent = dayEvents.find(
-  //   (event) => +event.startTime <= index && +event.endTime > hour
-  // );
 
   const consultation = service === 'Consultation';
   const vaccination = service === 'Vaccination';
 
-  // console.log(start, hour, end, hour);
 
   if (start <= hour && end > hour) {
     const eventDuration = differenceInMinutes(
       addHours(startOfDay(currentDate), end),
       addHours(startOfDay(currentDate), start)
     );
-
-    // const eventStartTime = addHours(startOfDay(currentDate), start);
-    // const minutesFromStartOfDay = differenceInMinutes(
-    //   eventStartTime,
-    //   startOfDay(new Date())
-    // );
-    // const top = minutesFromStartOfDay / 60; // Convert minutes to hours
-
     return (
       <div
         className={`p-2 h-full top-12 absolute left-48 w-[81%] ${
@@ -81,7 +67,6 @@ EventCardProps) => {
           consultation && 'bg-[#9747FF]/10 border-2 border-[#9747FF]/50'
         } rounded-xl`}
         onClick={() => handleCardClick(id)}
-        // style={{ height: `${eventDuration - 50}px` }}
       >
         {matchingEvent && (
           <div className='flex gap-2 items-start'>
