@@ -1,13 +1,8 @@
 'use client';
-import { useAppointment } from '@/app/store/use-appointmen';
 import { Avatar } from '../avatar';
-import Image from 'next/image';
 import { InfoCard } from './info-card';
-import { Button } from '../button';
 import { VerticalIcon } from '@/public/icons/vertical-icon';
-import { useState } from 'react';
 import { Form } from './form';
-import { useEvent } from '@/app/store/use-event';
 import { useAppointmentContext } from '@/app/hooks/use-appoinment-hook';
 
 export const Info = () => {
@@ -16,12 +11,7 @@ export const Info = () => {
     dispatch,
   } = useAppointmentContext();
 
-  const { onEdit, onClose } = useAppointment((state) => state);
-  // const { event } = useEvent((state) => state);
-
   const handleEdit = () => {
-    // showForm();
-    // onEdit();
     dispatch({ type: 'EDIT_INFO' });
   };
 
@@ -31,9 +21,6 @@ export const Info = () => {
       payload: id,
     });
   };
-
-  console.log('is editing? :', isEditing);
-  console.log('is open? :', isOpen);
 
   return (
     <div

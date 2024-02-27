@@ -1,11 +1,9 @@
 import { addDays, format, isToday, subDays } from 'date-fns';
 import { useState } from 'react';
 import { Button } from '../button';
-import { useAppointment } from '@/app/store/use-appointmen';
 import DayView from './day-view';
 import { BackIcon } from '@/public/icons/back-icon';
 import { NextIcon } from '@/public/icons/nextIcon';
-import { useEvent } from '@/app/store/use-event';
 import { useCalendar } from '@/app/store/use-calendar';
 import { useAppointmentContext } from '@/app/hooks/use-appoinment-hook';
 
@@ -15,11 +13,8 @@ export const View = () => {
     dispatch,
   } = useAppointmentContext();
 
-  const { showForm } = useAppointment((state) => state);
   const { date } = useCalendar((state) => state);
   const [currentDate, setCurrentDate] = useState(date);
-
-  const { clearEvent } = useEvent((state) => state);
 
   const prev = () => {
     setCurrentDate(subDays(currentDate, 1));
@@ -30,8 +25,6 @@ export const View = () => {
   };
 
   const handleAppointmenClick = () => {
-    // showForm();
-    // clearEvent();
     dispatch({ type: 'OPEN_FORM' });
   };
 

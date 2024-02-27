@@ -1,12 +1,9 @@
 import { useAppointmentContext } from '@/app/hooks/use-appoinment-hook';
-import { useAppointment } from '@/app/store/use-appointmen';
-import { useEvent } from '@/app/store/use-event';
 import { ConsultationIcon } from '@/public/icons/consultation-icon';
 import { InjectIcon } from '@/public/icons/inject-icon';
 import { UserIcon } from '@/public/icons/user-icon';
 import { VerticalIcon } from '@/public/icons/vertical-icon';
 import { addHours, differenceInMinutes, format, startOfDay } from 'date-fns';
-import { useState } from 'react';
 
 interface EventCardProps {
   service: string;
@@ -28,13 +25,8 @@ export const EventCard = ({
   hour,
   currentDate,
   id,
-}: // dayEvents,
-EventCardProps) => {
-  const { onOpen, onEdit } = useAppointment((state) => state);
+}: EventCardProps) => {
   const { dispatch } = useAppointmentContext();
-  const { deleteEvent } = useEvent((state) => state);
-  const [isOpenOptions, setIsOpenOptions] = useState(false);
-  const { setEvent } = useEvent((state) => state);
 
   const handleCardClick = (id: string) => {
     dispatch({ type: 'SET_OPEN_CARD', payload: id });
@@ -44,7 +36,6 @@ EventCardProps) => {
     e: React.MouseEvent<HTMLSpanElement, MouseEvent>
   ) => {
     e.stopPropagation();
-    setIsOpenOptions((prevState) => !prevState);
   };
 
   const handleDeleteClick = (id: string) => {

@@ -5,7 +5,6 @@ import { Controls } from './controls';
 import { useAppointmentContext } from '@/app/hooks/use-appoinment-hook';
 
 export const Navbar = () => {
-  // const { collapsed } = useSidebar((state) => state);
   const {
     state: { isCollapsed },
   } = useAppointmentContext();

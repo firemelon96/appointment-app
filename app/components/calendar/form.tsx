@@ -2,14 +2,11 @@ import { veterenary } from '@/app/data/vet';
 import { Button } from '../button';
 import { useForm } from 'react-hook-form';
 import { format } from 'date-fns';
-import { useEvent } from '@/app/store/use-event';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { AppointmentSchema, appointmentSchema } from '@/lib/types';
-import { useAppointment } from '@/app/store/use-appointmen';
 import { v4 as uuidv4 } from 'uuid';
 import { useAppointmentContext } from '@/app/hooks/use-appoinment-hook';
 import { useEffect } from 'react';
-// import { utcToZonedTime, format } from 'date-fns-tz';
 
 export const servicesENUM = {
   SERVICE_1: 'Consultation',
@@ -43,8 +40,6 @@ export const Form = () => {
     state: { appointment },
     dispatch,
   } = useAppointmentContext();
-  const { addEvent, updateEvent, events } = useEvent((state) => state);
-  const { onClose, isEditing } = useAppointment((state) => state);
 
   const dataForEditing = {
     id: appointment?.id,
@@ -111,15 +106,6 @@ export const Form = () => {
   };
 
   const onSubmit = (data: AppointmentSchema) => {
-    // if (isEditing) {
-    //   updateEvent(data.id, data);
-    //   console.log('update trigger');
-    // } else {
-    //   addEvent(data);
-    //   console.log('add trigger');
-    // }
-    // onClose();
-
     if (appointment) {
       dispatch({ type: 'UPDATE_APPOINTMENT', payload: { id: data.id, data } });
     }
@@ -144,8 +130,6 @@ export const Form = () => {
     //   format(utcDateTime, "yyyy-MM-dd'T'HH:mm:ss'Z'", { timeZone: 'UTC' })
     // );
   };
-
-  console.log(appointment);
 
   return (
     <div className='relative w-full px-10 pb-10'>

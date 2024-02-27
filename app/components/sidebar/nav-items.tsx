@@ -1,9 +1,7 @@
 'use client';
 
 import { useAppointmentContext } from '@/app/hooks/use-appoinment-hook';
-import { ReactComponentElement, ReactNode } from 'react';
-import { useSidebar } from '@/app/store/use-sidebar';
-import Image from 'next/image';
+import { ReactNode } from 'react';
 
 interface NavItemProps {
   icon: ReactNode;
@@ -12,7 +10,6 @@ interface NavItemProps {
 }
 
 export const NavItem = ({ icon, label, href }: NavItemProps) => {
-  // const { collapsed } = useSidebar((state) => state);
   const {
     state: { isCollapsed },
   } = useAppointmentContext();
@@ -24,14 +21,6 @@ export const NavItem = ({ icon, label, href }: NavItemProps) => {
           isCollapsed && 'justify-center items-center'
         }`}
       >
-        {/* <Image
-          priority
-          src={icon}
-          width={20}
-          height={20}
-          alt='icon'
-          className='hover:text-[#FF630B]'
-        /> */}
         {icon}
         {!isCollapsed && <span className='truncate'>{label}</span>}
       </div>

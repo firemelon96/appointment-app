@@ -4,7 +4,6 @@ import { Logo } from './Logo';
 import { useAppointmentContext } from '@/app/hooks/use-appoinment-hook';
 
 export const Header = () => {
-  // const { collapsed } = useSidebar((state) => state);
   const {
     state: { isCollapsed },
   } = useAppointmentContext();

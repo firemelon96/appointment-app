@@ -5,7 +5,6 @@ import { Info } from './info';
 import { useAppointmentContext } from '@/app/hooks/use-appoinment-hook';
 
 export const Calendar = () => {
-  // const { isOpen } = useAppointment((state) => state);
   const {
     state: { isOpen },
   } = useAppointmentContext();

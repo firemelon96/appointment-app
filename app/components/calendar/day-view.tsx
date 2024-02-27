@@ -1,9 +1,7 @@
 'use client';
 import React, { useEffect } from 'react';
 import { format, startOfDay, addHours } from 'date-fns';
-import { useAppointment } from '@/app/store/use-appointmen';
 import { EventCard } from './event-card';
-import { useEvent } from '@/app/store/use-event';
 import { useAppointmentContext } from '@/app/hooks/use-appoinment-hook';
 
 interface DayViewProps {
@@ -11,28 +9,14 @@ interface DayViewProps {
 }
 
 const DayView = ({ currentDate }: DayViewProps) => {
-  const { showForm } = useAppointment((state) => state);
-  const { events, clearEvent } = useEvent((state) => state);
   const {
     state: { appointments },
     dispatch,
   } = useAppointmentContext();
 
   const hours = Array.from({ length: 24 }, (_, i) => i);
-  // useEffect(() => {
-  //   events.map((event) => {
-  //     const utcDate = new Date(event.startTime).getUTCDate();
-  //     const utcMonth = new Date(event.startTime).getUTCMonth();
-  //     const utcYear = new Date(event.startTime).getUTCFullYear();
-  //     console.log(`${utcMonth} ${utcDate}, ${utcYear}`);
-  //   });
-  // }, [events]);
 
   const dayEvents = appointments.filter((appoinment) => {
-    // const date = new Date(event.startTime);
-    // const eventDate = `${date.getMonth()} ${date.getDay()}`;
-    // const dateView = `${currentDate.getMonth()} ${currentDate.getDay()}`;
-    // return eventDate === dateView;
     return (
       format(new Date(appoinment.startTime), 'yyyy MMM, d') ===
       format(currentDate, 'yyyy MMM, d')
@@ -40,8 +24,6 @@ const DayView = ({ currentDate }: DayViewProps) => {
   });
 
   const handelDoubleClick = () => {
-    // showForm();
-    // clearEvent();
     dispatch({ type: 'OPEN_FORM' });
   };
 

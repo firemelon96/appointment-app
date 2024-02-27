@@ -1,14 +1,11 @@
 'use client';
 import { useAppointmentContext } from '@/app/hooks/use-appoinment-hook';
-import { useSidebar } from '@/app/store/use-sidebar';
-import React, { useContext } from 'react';
+import React from 'react';
 
 interface WrapperProps {
   children: React.ReactNode;
 }
 export const Wrapper = ({ children }: WrapperProps) => {
-  // const { collapsed } = useSidebar((state) => state);
-  // const { dispatch } = useAppointmentContext();
   const {
     state: { isCollapsed },
   } = useAppointmentContext();
