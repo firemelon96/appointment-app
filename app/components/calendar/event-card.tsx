@@ -1,3 +1,4 @@
+import { useAppointmentContext } from '@/app/hooks/use-appoinment-hook';
 import { useAppointment } from '@/app/store/use-appointmen';
 import { useEvent } from '@/app/store/use-event';
 import { ConsultationIcon } from '@/public/icons/consultation-icon';
@@ -30,13 +31,15 @@ export const EventCard = ({
 }: // dayEvents,
 EventCardProps) => {
   const { onOpen, onEdit } = useAppointment((state) => state);
+  const { dispatch } = useAppointmentContext();
   const { deleteEvent } = useEvent((state) => state);
   const [isOpenOptions, setIsOpenOptions] = useState(false);
   const { setEvent } = useEvent((state) => state);
 
   const handleCardClick = (id: string) => {
-    onOpen();
-    setEvent(id);
+    // onOpen();
+    // setEvent(id);
+    dispatch({ type: 'SET_OPEN', payload: id });
   };
 
   const handleOptionClick = (
@@ -52,7 +55,6 @@ EventCardProps) => {
 
   const consultation = service === 'Consultation';
   const vaccination = service === 'Vaccination';
-
 
   if (start <= hour && end > hour) {
     const eventDuration = differenceInMinutes(

@@ -2,9 +2,13 @@
 import { useAppointment } from '@/app/store/use-appointmen';
 import { View } from './view';
 import { Info } from './info';
+import { useAppointmentContext } from '@/app/hooks/use-appoinment-hook';
 
 export const Calendar = () => {
-  const { isOpen } = useAppointment((state) => state);
+  // const { isOpen } = useAppointment((state) => state);
+  const {
+    state: { isOpen },
+  } = useAppointmentContext();
 
   return (
     <div className=''>

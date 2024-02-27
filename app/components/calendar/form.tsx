@@ -14,15 +14,12 @@ export const servicesENUM = {
 };
 
 interface FormProps {
-  event: AppointmentSchema;
-  isEditing: boolean;
+  appointment: AppointmentSchema;
 }
 
-export const Form = ({ event, isEditing }: FormProps) => {
-  const { addEvent, events, updateEvent, clearEvent } = useEvent(
-    (state) => state
-  );
-  const { onClose } = useAppointment((state) => state);
+export const Form = ({ appointment }: FormProps) => {
+  const { addEvent, updateEvent, events } = useEvent((state) => state);
+  const { onClose, isEditing } = useAppointment((state) => state);
 
   const {
     handleSubmit,
@@ -33,24 +30,24 @@ export const Form = ({ event, isEditing }: FormProps) => {
   } = useForm<AppointmentSchema>({
     resolver: zodResolver(appointmentSchema),
     defaultValues: {
-      service: event?.service,
-      startTime: event?.startTime,
-      endTime: event?.endTime,
-      clientName: event?.clientName,
-      phone: event?.phone,
-      address: event?.address,
-      email: event?.email,
-      vetName: event?.vetName,
-      petName: event?.petName,
-      breed: event?.breed,
-      age: event?.age,
-      gender: event?.gender,
-      imageUrl: event?.imageUrl,
-      vetAddress: event?.vetAddress,
-      building: event?.building,
-      contact: event?.contact,
-      bldgUrl: event?.bldgUrl,
-      birthday: event?.birthday,
+      service: appointment?.service,
+      startTime: appointment?.startTime,
+      endTime: appointment?.endTime,
+      clientName: appointment?.clientName,
+      phone: appointment?.phone,
+      address: appointment?.address,
+      email: appointment?.email,
+      vetName: appointment?.vetName,
+      petName: appointment?.petName,
+      breed: appointment?.breed,
+      age: appointment?.age,
+      gender: appointment?.gender,
+      imageUrl: appointment?.imageUrl,
+      vetAddress: appointment?.vetAddress,
+      building: appointment?.building,
+      contact: appointment?.contact,
+      bldgUrl: appointment?.bldgUrl,
+      birthday: appointment?.birthday,
     },
   });
 
@@ -71,11 +68,15 @@ export const Form = ({ event, isEditing }: FormProps) => {
   const onSubmit = (data: AppointmentSchema) => {
     if (isEditing) {
       updateEvent(data.id, data);
+      console.log('update trigger');
     } else {
       addEvent(data);
+      console.log('add trigger');
     }
     onClose();
   };
+
+  console.log(events);
 
   return (
     <div className='relative w-full px-10 pb-10'>
@@ -265,7 +266,9 @@ export const Form = ({ event, isEditing }: FormProps) => {
         </div>
       </form>
       <div className='flex flex-col gap-2 w-full text-white py-7'>
-        <Button onClick={() => reset()}>Cancel Appointment</Button>
+        <Button type='button' onClick={() => reset()}>
+          Cancel Appointment
+        </Button>
       </div>
     </div>
   );

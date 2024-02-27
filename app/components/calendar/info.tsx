@@ -8,16 +8,25 @@ import { VerticalIcon } from '@/public/icons/vertical-icon';
 import { useState } from 'react';
 import { Form } from './form';
 import { useEvent } from '@/app/store/use-event';
+import { useAppointmentContext } from '@/app/hooks/use-appoinment-hook';
 
 export const Info = () => {
-  const { isOpen, isEditing, isShow, onEdit, onClose, showForm } =
-    useAppointment((state) => state);
-  const { event } = useEvent((state) => state);
+  const {
+    state: { isOpen, isEditing, appointment },
+    dispatch,
+  } = useAppointmentContext();
+
+  const { onEdit, onClose } = useAppointment((state) => state);
+  // const { event } = useEvent((state) => state);
 
   const handleEdit = () => {
     // showForm();
-    onEdit();
+    // onEdit();
+    // dispatch({ type: 'OPEN_FORM' });
   };
+
+  console.log('is editing? :', isEditing);
+  console.log('is open? :', isOpen);
 
   return (
     <div
@@ -29,11 +38,11 @@ export const Info = () => {
         className='fixed h-dvh overflow-y-scroll'
         style={{ height: 'calc(100vh - 116px)' }}
       >
-        {!isEditing && event ? (
+        {!isEditing ? (
           <div className='relative w-auto overflow-y-auto'>
             <div className='flex items-center px-10 py-7 border-b-2 border-b-gray-300'>
               <Avatar
-                name={event?.clientName}
+                name={appointment?.clientName}
                 position='Client '
                 src='/pic.png'
                 width={80}
@@ -47,18 +56,18 @@ export const Info = () => {
             </div>
             <InfoCard
               label='Contact Information'
-              email={event.email}
-              address={event.address}
-              phone={event.phone}
+              email={appointment?.email}
+              address={appointment?.address}
+              phone={appointment?.phone}
             />
             <InfoCard
               withAvatar
               imgUrl='/bldg.jpeg'
-              name={event.vetName}
-              entity={event.building}
+              name={appointment?.vetName}
+              entity={appointment?.building}
               email='client@gmail.com'
-              address={event.vetAddress}
-              phone={event.contact}
+              address={appointment?.vetAddress}
+              phone={appointment?.contact}
               label='Clinic Details'
             />
             <InfoCard
@@ -66,12 +75,12 @@ export const Info = () => {
               isPet
               imgUrl='/dog.jpeg'
               withAvatar
-              name={event.petName}
+              name={appointment?.petName}
               entity='Dog'
-              breed={event.breed}
-              sex={event.gender}
-              age={event.age}
-              birthday={event.endTime}
+              breed={appointment?.breed}
+              sex={appointment?.gender}
+              age={appointment?.age}
+              birthday={appointment?.endTime}
             />
 
             <div className='flex w-full flex-col gap-4 p-10'>
@@ -90,7 +99,7 @@ export const Info = () => {
             </div>
           </div>
         ) : (
-          <Form event={event!} isEditing={isEditing} />
+          <Form appointment={appointment!} />
         )}
       </div>
     </div>

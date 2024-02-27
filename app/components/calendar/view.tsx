@@ -7,8 +7,14 @@ import { BackIcon } from '@/public/icons/back-icon';
 import { NextIcon } from '@/public/icons/nextIcon';
 import { useEvent } from '@/app/store/use-event';
 import { useCalendar } from '@/app/store/use-calendar';
+import { useAppointmentContext } from '@/app/hooks/use-appoinment-hook';
 
 export const View = () => {
+  const {
+    state: { isOpen },
+    dispatch,
+  } = useAppointmentContext();
+
   const { showForm } = useAppointment((state) => state);
   const { date } = useCalendar((state) => state);
   const [currentDate, setCurrentDate] = useState(date);
@@ -24,8 +30,9 @@ export const View = () => {
   };
 
   const handleAppointmenClick = () => {
-    showForm();
-    clearEvent();
+    // showForm();
+    // clearEvent();
+    dispatch({ type: 'OPEN_FORM' });
   };
 
   const today = isToday(currentDate);
@@ -52,7 +59,7 @@ export const View = () => {
         </div>
         <div className='text-white'>
           <Button primary onClick={handleAppointmenClick}>
-            New Appointment
+            {isOpen ? 'Close' : 'Add Appoinment'}
           </Button>
         </div>
       </div>
