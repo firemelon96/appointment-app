@@ -37,8 +37,6 @@ EventCardProps) => {
   const { setEvent } = useEvent((state) => state);
 
   const handleCardClick = (id: string) => {
-    // onOpen();
-    // setEvent(id);
     dispatch({ type: 'SET_OPEN_CARD', payload: id });
   };
 
@@ -47,6 +45,10 @@ EventCardProps) => {
   ) => {
     e.stopPropagation();
     setIsOpenOptions((prevState) => !prevState);
+  };
+
+  const handleDeleteClick = (id: string) => {
+    dispatch({ type: 'DELETE_APPOINTMENT', payload: id });
   };
 
   const start = +startTime.split('T')[1].split(':')[0];
@@ -93,22 +95,20 @@ EventCardProps) => {
               </span>
             </div>
             <span
-              className='ml-auto relative'
+              className='ml-auto group relative'
               onClick={(e) => handleOptionClick(e)}
             >
               <VerticalIcon stroke='black' />
-            </span>
-            {isOpenOptions && (
-              <div className='flex flex-col absolute border z-50 shadow-sm border-gray-400 right-6 rounded-xl bg-gray-200 mr-auto'>
+              <div className='opacity-0 group-hover:opacity-100 top-2 absolute border z-50 shadow-sm border-gray-400 right-6 rounded-xl bg-gray-200 mr-auto'>
                 <button
                   type='button'
                   className='px-3 py-2 text-rose-400'
-                  onClick={() => deleteEvent(id)}
+                  onClick={() => handleDeleteClick(id)}
                 >
-                  Cancel
+                  Delete
                 </button>
               </div>
-            )}
+            </span>
           </div>
         )}
       </div>

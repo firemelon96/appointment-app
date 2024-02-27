@@ -25,6 +25,13 @@ export const Info = () => {
     dispatch({ type: 'EDIT_INFO' });
   };
 
+  const handleDeleteClick = (id: string) => {
+    dispatch({
+      type: 'DELETE_APPOINTMENT',
+      payload: id,
+    });
+  };
+
   console.log('is editing? :', isEditing);
   console.log('is open? :', isOpen);
 
@@ -92,7 +99,7 @@ export const Info = () => {
               </button>
               <button
                 className='flex border border-gray-500 text-gray-500 items-center justify-center bg-transparent px-4 py-2 w-full rounded-md'
-                onClick={() => onClose()}
+                onClick={() => handleDeleteClick(appointment?.id!)}
               >
                 Cancel Appoinment
               </button>

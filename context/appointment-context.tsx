@@ -123,6 +123,8 @@ const reducerFn = (state: IState, action: TAction): IState => {
         appointments: state.appointments.filter(
           (appointment) => appointment.id !== action.payload
         ),
+        appointment: undefined,
+        isOpen: false,
       };
     case 'EDIT_INFO':
       return {
