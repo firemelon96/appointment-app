@@ -7,19 +7,71 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { AppointmentSchema, appointmentSchema } from '@/lib/types';
 import { useAppointment } from '@/app/store/use-appointmen';
 import { v4 as uuidv4 } from 'uuid';
+import { useAppointmentContext } from '@/app/hooks/use-appoinment-hook';
+import { useEffect } from 'react';
+// import { utcToZonedTime, format } from 'date-fns-tz';
 
 export const servicesENUM = {
   SERVICE_1: 'Consultation',
   SERVICE_2: 'Vaccination',
 };
 
-interface FormProps {
-  appointment: AppointmentSchema;
-}
+const defaultValues = {
+  id: '',
+  service: '',
+  startTime: '',
+  endTime: '',
+  clientName: '',
+  phone: '',
+  address: '',
+  email: '',
+  vetName: '',
+  petName: '',
+  breed: '',
+  age: '',
+  gender: '',
+  imageUrl: '',
+  vetAddress: '',
+  building: '',
+  contact: '',
+  bldgUrl: '',
+  birthday: '',
+};
 
-export const Form = ({ appointment }: FormProps) => {
+export const Form = () => {
+  const {
+    state: { appointment },
+    dispatch,
+  } = useAppointmentContext();
   const { addEvent, updateEvent, events } = useEvent((state) => state);
   const { onClose, isEditing } = useAppointment((state) => state);
+
+  const dataForEditing = {
+    id: appointment?.id,
+    service: appointment?.service,
+    startTime: appointment?.startTime,
+    endTime: appointment?.endTime,
+    clientName: appointment?.clientName,
+    phone: appointment?.phone,
+    address: appointment?.address,
+    email: appointment?.email,
+    vetName: appointment?.vetName,
+    petName: appointment?.petName,
+    breed: appointment?.breed,
+    age: appointment?.age,
+    gender: appointment?.gender,
+    imageUrl: appointment?.imageUrl,
+    vetAddress: appointment?.vetAddress,
+    building: appointment?.building,
+    contact: appointment?.contact,
+    bldgUrl: appointment?.bldgUrl,
+    birthday: appointment?.birthday,
+  };
+
+  const defaultValuesForEditing = {
+    ...defaultValues,
+    ...dataForEditing,
+  };
 
   const {
     handleSubmit,
@@ -29,26 +81,7 @@ export const Form = ({ appointment }: FormProps) => {
     setValue,
   } = useForm<AppointmentSchema>({
     resolver: zodResolver(appointmentSchema),
-    defaultValues: {
-      service: appointment?.service,
-      startTime: appointment?.startTime,
-      endTime: appointment?.endTime,
-      clientName: appointment?.clientName,
-      phone: appointment?.phone,
-      address: appointment?.address,
-      email: appointment?.email,
-      vetName: appointment?.vetName,
-      petName: appointment?.petName,
-      breed: appointment?.breed,
-      age: appointment?.age,
-      gender: appointment?.gender,
-      imageUrl: appointment?.imageUrl,
-      vetAddress: appointment?.vetAddress,
-      building: appointment?.building,
-      contact: appointment?.contact,
-      bldgUrl: appointment?.bldgUrl,
-      birthday: appointment?.birthday,
-    },
+    defaultValues: appointment ? defaultValuesForEditing : defaultValues,
   });
 
   const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -65,18 +98,54 @@ export const Form = ({ appointment }: FormProps) => {
 
   const initialValues = Object.values(servicesENUM);
 
-  const onSubmit = (data: AppointmentSchema) => {
-    if (isEditing) {
-      updateEvent(data.id, data);
-      console.log('update trigger');
+  useEffect(() => {
+    if (appointment) {
+      reset(defaultValuesForEditing);
     } else {
-      addEvent(data);
-      console.log('add trigger');
+      reset(defaultValues);
     }
-    onClose();
+  }, [appointment, reset]);
+
+  const handleCancel = () => {
+    dispatch({ type: 'OPEN_FORM' });
   };
 
-  console.log(events);
+  const onSubmit = (data: AppointmentSchema) => {
+    // if (isEditing) {
+    //   updateEvent(data.id, data);
+    //   console.log('update trigger');
+    // } else {
+    //   addEvent(data);
+    //   console.log('add trigger');
+    // }
+    // onClose();
+
+    if (appointment) {
+      dispatch({ type: 'UPDATE_APPOINTMENT', payload: { id: data.id, data } });
+    }
+
+    if (appointment?.id === data.id) return;
+
+    const transformedData = {
+      ...data,
+      id: uuidv4(),
+    };
+
+    dispatch({ type: 'CREATE_APPOINTMENT', payload: transformedData });
+    reset();
+
+    //console log the appoinment datetime utc conversion
+    // const timezone = 'UTC';
+    // const utcDateTime = utcToZonedTime(
+    //   new Date(appointment?.startTime!),
+    //   timezone
+    // );
+    // console.log(
+    //   format(utcDateTime, "yyyy-MM-dd'T'HH:mm:ss'Z'", { timeZone: 'UTC' })
+    // );
+  };
+
+  console.log(appointment);
 
   return (
     <div className='relative w-full px-10 pb-10'>
@@ -86,7 +155,7 @@ export const Form = ({ appointment }: FormProps) => {
         className='flex w-full flex-col text-gray-500'
       >
         <div className='space-y-3'>
-          <input type='text' hidden value={uuidv4()} {...register('id')} />
+          <input type='text' hidden {...register('id')} />
           <div className='text-lg'>
             <select
               {...register('service')}
@@ -261,12 +330,12 @@ export const Form = ({ appointment }: FormProps) => {
             disabled={isLoading}
             type='submit'
           >
-            {isEditing ? 'Update Appointment' : 'Add Appointment'}
+            {appointment ? 'Update Appointment' : 'Add Appointment'}
           </button>
         </div>
       </form>
       <div className='flex flex-col gap-2 w-full text-white py-7'>
-        <Button type='button' onClick={() => reset()}>
+        <Button type='button' onClick={handleCancel}>
           Cancel Appointment
         </Button>
       </div>

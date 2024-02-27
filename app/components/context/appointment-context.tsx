@@ -33,15 +33,16 @@ interface IState {
 }
 
 type TAction =
-  | { type: 'CREATE_APPOINTMENT'; payload: Appointment }
   | { type: 'OPEN_FORM' }
+  | { type: 'CREATE_APPOINTMENT'; payload: Appointment }
+  | {
+      type: 'UPDATE_APPOINTMENT';
+      payload: { id: string; data: Partial<Appointment> };
+    }
   | { type: 'DELETE_APPOINTMENT'; payload: string }
-  | { type: 'SET_OPEN'; payload: string }
-  | { type: 'SET_COLLAPSE' };
-//   | 'UPDATE_APPOINTMENT'
-//   | 'DELETE_APPOINTMENT'
-//   | 'RESET';
-// payload: IState & Appontments;
+  | { type: 'SET_OPEN_CARD'; payload: string }
+  | { type: 'SET_COLLAPSE' }
+  | { type: 'EDIT_INFO' };
 
 const initValue: IState = {
   isOpen: false,
@@ -85,7 +86,7 @@ const reducerFn = (state: IState, action: TAction): IState => {
         ...state,
         isCollapsed: !state.isCollapsed,
       };
-    case 'SET_OPEN':
+    case 'SET_OPEN_CARD':
       return {
         ...state,
         isOpen: true,
@@ -105,6 +106,16 @@ const reducerFn = (state: IState, action: TAction): IState => {
       return {
         ...state,
         appointments: [action.payload, ...state.appointments],
+        isOpen: false,
+      };
+    case 'UPDATE_APPOINTMENT':
+      return {
+        ...state,
+        appointments: state.appointments.map((appointment) =>
+          appointment.id === action.payload.id
+            ? { ...appointment, ...action.payload.data }
+            : appointment
+        ),
       };
     case 'DELETE_APPOINTMENT':
       return {
@@ -112,6 +123,11 @@ const reducerFn = (state: IState, action: TAction): IState => {
         appointments: state.appointments.filter(
           (appointment) => appointment.id !== action.payload
         ),
+      };
+    case 'EDIT_INFO':
+      return {
+        ...state,
+        isEditing: true,
       };
     default:
       return state;

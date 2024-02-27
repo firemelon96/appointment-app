@@ -39,7 +39,7 @@ EventCardProps) => {
   const handleCardClick = (id: string) => {
     // onOpen();
     // setEvent(id);
-    dispatch({ type: 'SET_OPEN', payload: id });
+    dispatch({ type: 'SET_OPEN_CARD', payload: id });
   };
 
   const handleOptionClick = (

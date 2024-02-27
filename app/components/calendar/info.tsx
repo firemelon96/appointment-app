@@ -22,7 +22,7 @@ export const Info = () => {
   const handleEdit = () => {
     // showForm();
     // onEdit();
-    // dispatch({ type: 'OPEN_FORM' });
+    dispatch({ type: 'EDIT_INFO' });
   };
 
   console.log('is editing? :', isEditing);
@@ -99,7 +99,7 @@ export const Info = () => {
             </div>
           </div>
         ) : (
-          <Form appointment={appointment!} />
+          <Form />
         )}
       </div>
     </div>

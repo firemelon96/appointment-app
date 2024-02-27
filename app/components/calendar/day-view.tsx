@@ -39,14 +39,10 @@ const DayView = ({ currentDate }: DayViewProps) => {
     );
   });
 
-  console.log(dayEvents);
-
   const handelDoubleClick = () => {
     // showForm();
     // clearEvent();
     dispatch({ type: 'OPEN_FORM' });
-
-    //console log the appoinment datetime utc conversion
   };
 
   return (
