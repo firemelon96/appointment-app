@@ -1,5 +1,12 @@
 import { HomeIcon } from '@/public/icons/home';
 import { NavItem } from './nav-items';
+import { AppointmentIcon } from '@/public/icons/appointmentIcon';
+import { MessageIcon } from '@/public/icons/message';
+import { ContactIcon } from '@/public/icons/contact-icon';
+import { AnalyticsIcon } from '@/public/icons/analytics-icon';
+import { SubIcon } from '@/public/icons/subs-icon';
+import { SettingIcon } from '@/public/icons/settingIcon';
+import { HelpIcon } from '@/public/icons/help-icon';
 
 export const Navigation = () => {
   const routes = [
@@ -8,41 +15,41 @@ export const Navigation = () => {
       href: '/',
       icon: <HomeIcon stroke='white' />,
     },
-    // {
-    //   label: 'Appointment',
-    //   href: '/appointment',
-    //   icon: '/icons/appointment.svg',
-    // },
-    // {
-    //   label: 'Messages',
-    //   href: '/messages',
-    //   icon: '/icons/message.svg',
-    // },
-    // {
-    //   label: 'Contacts',
-    //   href: '/contacts',
-    //   icon: '/icons/contact.svg',
-    // },
-    // {
-    //   label: 'Data Analytics',
-    //   href: '/data-analytics',
-    //   icon: '/icons/analytics.svg',
-    // },
-    // {
-    //   label: 'Subscription',
-    //   href: '/subscription',
-    //   icon: '/icons/subscription.svg',
-    // },
-    // {
-    //   label: 'Help Center',
-    //   href: '/help-center',
-    //   icon: '/icons/center.svg',
-    // },
-    // {
-    //   label: 'Setting',
-    //   href: '/settings',
-    //   icon: '/icons/setting.svg',
-    // },
+    {
+      label: 'Appointment',
+      href: '/appointment',
+      icon: <AppointmentIcon fill='white' />,
+    },
+    {
+      label: 'Messages',
+      href: '/messages',
+      icon: <MessageIcon fill='white' />,
+    },
+    {
+      label: 'Contacts',
+      href: '/contacts',
+      icon: <ContactIcon fill='white' />,
+    },
+    {
+      label: 'Data Analytics',
+      href: '/data-analytics',
+      icon: <AnalyticsIcon fill='white' />,
+    },
+    {
+      label: 'Subscription',
+      href: '/subscription',
+      icon: <SubIcon stroke='white' />,
+    },
+    {
+      label: 'Help Center',
+      href: '/help-center',
+      icon: <HelpIcon fill='white' />,
+    },
+    {
+      label: 'Setting',
+      href: '/settings',
+      icon: <SettingIcon fill='white' />,
+    },
   ];
 
   return (
