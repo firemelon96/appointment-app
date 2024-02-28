@@ -13,9 +13,14 @@ export const servicesENUM = {
   SERVICE_2: 'Vaccination',
 };
 
+const genderENUM = {
+  MALE: 'male',
+  FEMALE: 'female',
+};
+
 const defaultValues = {
   id: '',
-  service: '',
+  service: servicesENUM.SERVICE_1,
   startTime: '',
   endTime: '',
   clientName: '',
@@ -26,7 +31,7 @@ const defaultValues = {
   petName: '',
   breed: '',
   age: '',
-  gender: '',
+  gender: genderENUM.MALE,
   imageUrl: '',
   vetAddress: '',
   building: '',
@@ -89,6 +94,8 @@ export const Form = () => {
   });
 
   const initialValues = Object.values(servicesENUM);
+
+  const genderValues = Object.values(genderENUM);
 
   useEffect(() => {
     const fetchJSON = async () => {
@@ -305,14 +312,16 @@ export const Form = () => {
             placeholder='Age'
           />
           {errors.age && <span>{errors.age.message}</span>}
-          <input
-            type='text'
-            {...register('gender', {
-              required: 'Gender is required',
-            })}
-            className='w-full p-1 rounded-xl px-2'
-            placeholder='Gender'
-          />
+          <select
+            {...register('gender')}
+            className='p-1 px-2 w-full rounded-xl'
+          >
+            {genderValues.map((gender) => (
+              <option key={gender} value={gender}>
+                {gender}
+              </option>
+            ))}
+          </select>
           <input
             type='date'
             {...register('birthday', {

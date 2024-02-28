@@ -1,5 +1,5 @@
 'use client';
-import { ReactNode, createContext, useEffect, useReducer } from 'react';
+import { ReactNode, createContext, useReducer } from 'react';
 
 interface Appointment {
   id: string;
