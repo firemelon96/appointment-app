@@ -1,5 +1,3 @@
-import { useCalendar } from '@/app/store/use-calendar';
-import { useEvent } from '@/app/store/use-event';
 import Image from 'next/image';
 import { useState } from 'react';
 import { format } from 'date-fns';
@@ -97,6 +95,11 @@ export const Search = () => {
               </li>
             ))}
           </ul>
+        </div>
+      )}
+      {filterSearch.length === 0 && (
+        <div className='absolute z-40 h-auto flex-grow bg-gray-200 top-20 w-3/4 p-5 shadow-lg rounded-md'>
+          <p className='text-gray-400'>No results</p>
         </div>
       )}
     </>

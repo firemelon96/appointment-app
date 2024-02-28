@@ -74,7 +74,7 @@ export const Info = () => {
               breed={appointment?.breed}
               sex={appointment?.gender}
               age={appointment?.age}
-              birthday={appointment?.endTime}
+              birthday={appointment?.birthday}
             />
 
             <div className='flex w-full flex-col gap-4 p-10'>

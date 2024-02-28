@@ -155,16 +155,7 @@ export const Form = () => {
     // Convert the date to UTC
     const utcDate = date.toISOString();
 
-    console.log(utcDate);
-    //console log the appoinment datetime utc conversion
-    // const timezone = 'UTC';
-    // const utcDateTime = utcToZonedTime(
-    //   new Date(appointment?.startTime!),
-    //   timezone
-    // );
-    // console.log(
-    //   format(utcDateTime, "yyyy-MM-dd'T'HH:mm:ss'Z'", { timeZone: 'UTC' })
-    // );
+    console.log('UTC conversion: ', utcDate);
   };
 
   return (
