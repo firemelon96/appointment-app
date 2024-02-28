@@ -117,7 +117,7 @@ export const Form = () => {
     } else {
       reset(defaultValues);
     }
-  }, []);
+  }, [appointment]);
 
   const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const selectedName = e.target.value;
