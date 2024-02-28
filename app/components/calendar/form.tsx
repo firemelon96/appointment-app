@@ -1,12 +1,13 @@
-import { veterenary } from '@/app/data/vet';
+import { useEffect } from 'react';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { v4 as uuidv4 } from 'uuid';
+import { format, formatISO, parseISO } from 'date-fns';
+
 import { Button } from '../button';
 import { useForm } from 'react-hook-form';
-import { format } from 'date-fns';
-import { zodResolver } from '@hookform/resolvers/zod';
 import { AppointmentSchema, appointmentSchema } from '@/lib/types';
-import { v4 as uuidv4 } from 'uuid';
 import { useAppointmentContext } from '@/app/hooks/use-appoinment-hook';
-import { useEffect, useState } from 'react';
+import { veterinary } from '@/app/data/veterinary';
 
 export const servicesENUM = {
   SERVICE_1: 'Consultation',
@@ -45,11 +46,11 @@ type Veterinary = {
   address: string;
   building: string;
   contact_number: string;
-  imgUrl: string;
+  bldgUrl: string;
 };
 
 export const Form = () => {
-  const [veterinary, setVeterinary] = useState<Veterinary[]>([]);
+  // const [veterinary, setVeterinary] = useState<Veterinary[]>([]);
   const {
     state: { appointment },
     dispatch,
@@ -97,18 +98,18 @@ export const Form = () => {
 
   const genderValues = Object.values(genderENUM);
 
-  useEffect(() => {
-    const fetchJSON = async () => {
-      try {
-        const res = await fetch('http://localhost:8000/veterinary');
-        const data = await res.json();
-        setVeterinary(data);
-      } catch (error) {
-        console.log('Failed to fetch the veterinary.json');
-      }
-    };
-    fetchJSON();
-  }, []);
+  // useEffect(() => {
+  //   const fetchJSON = async () => {
+  //     try {
+  //       const res = await fetch('http://localhost:8000/veterinary');
+  //       const data = await res.json();
+  //       setVeterinary(data);
+  //     } catch (error) {
+  //       console.log('Failed to fetch the veterinary.json');
+  //     }
+  //   };
+  //   fetchJSON();
+  // }, []);
 
   useEffect(() => {
     if (appointment) {
@@ -120,14 +121,14 @@ export const Form = () => {
 
   const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const selectedName = e.target.value;
-    const selectedData = veterenary.find(
+    const selectedData = veterinary.find(
       (item) => item.veterinary_name === selectedName
     );
     setValue('vetName', selectedName);
     setValue('vetAddress', selectedData?.address || '');
     setValue('building', selectedData?.building || '');
     setValue('contact', selectedData?.contact_number || '');
-    setValue('bldgUrl', selectedData?.imgUrl || '');
+    setValue('bldgUrl', selectedData?.bldgUrl || '');
   };
 
   const handleCancel = () => {
@@ -149,6 +150,12 @@ export const Form = () => {
     dispatch({ type: 'CREATE_APPOINTMENT', payload: transformedData });
     reset();
 
+    const date = new Date(data.startTime);
+
+    // Convert the date to UTC
+    const utcDate = date.toISOString();
+
+    console.log(utcDate);
     //console log the appoinment datetime utc conversion
     // const timezone = 'UTC';
     // const utcDateTime = utcToZonedTime(
