@@ -202,6 +202,7 @@ const reducerFn = (state: IState, action: TAction): IState => {
             ? { ...appointment, ...action.payload.data }
             : appointment
         ),
+        isOpen: false,
       };
     case 'DELETE_APPOINTMENT':
       return {

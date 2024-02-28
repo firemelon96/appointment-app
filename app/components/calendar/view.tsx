@@ -53,9 +53,11 @@ export const View = () => {
           )}
         </div>
         <div className='text-white'>
-          <Button primary onClick={handleAppointmenClick}>
-            {isOpen ? 'Close' : 'Add Appoinment'}
-          </Button>
+          {!isOpen && (
+            <Button primary onClick={handleAppointmenClick}>
+              Add Appoinment
+            </Button>
+          )}
         </div>
       </div>
       <DayView currentDate={currentDate} />

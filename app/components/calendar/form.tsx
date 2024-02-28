@@ -133,13 +133,16 @@ export const Form = () => {
 
   const handleCancel = () => {
     dispatch({ type: 'OPEN_FORM' });
+    reset(defaultValues);
   };
 
   const onSubmit = (data: AppointmentSchema) => {
     if (appointment) {
       dispatch({ type: 'UPDATE_APPOINTMENT', payload: { id: data.id, data } });
+      reset(defaultValues);
     }
 
+    // console.log(appointment?.id);
     if (appointment?.id === data.id) return;
 
     const transformedData = {
@@ -148,7 +151,7 @@ export const Form = () => {
     };
 
     dispatch({ type: 'CREATE_APPOINTMENT', payload: transformedData });
-    reset();
+    reset(defaultValues);
 
     const date = new Date(data.startTime);
 
