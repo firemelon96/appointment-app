@@ -56,7 +56,7 @@ export const Info = () => {
             />
             <InfoCard
               withAvatar
-              imgUrl='/bldg.jpeg'
+              imgUrl={appointment?.bldgUrl}
               name={appointment?.vetName}
               entity={appointment?.building}
               email='client@gmail.com'

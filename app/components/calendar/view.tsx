@@ -4,7 +4,6 @@ import { Button } from '../button';
 import DayView from './day-view';
 import { BackIcon } from '@/public/icons/back-icon';
 import { NextIcon } from '@/public/icons/nextIcon';
-import { useCalendar } from '@/app/store/use-calendar';
 import { useAppointmentContext } from '@/app/hooks/use-appoinment-hook';
 
 export const View = () => {
@@ -13,7 +12,6 @@ export const View = () => {
     dispatch,
   } = useAppointmentContext();
 
-  console.log(date);
   const [currentDate, setCurrentDate] = useState(date);
 
   useEffect(() => {
