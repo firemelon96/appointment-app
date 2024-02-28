@@ -9,7 +9,7 @@ interface NavItemProps {
   href: string;
 }
 
-export const NavItem = ({ icon, label, href }: NavItemProps) => {
+export const NavItem = ({ icon, label }: NavItemProps) => {
   const {
     state: { isCollapsed },
   } = useAppointmentContext();

@@ -1,5 +1,4 @@
 'use client';
-import { useSidebar } from '@/app/store/use-sidebar';
 import { Logo } from './Logo';
 import { useAppointmentContext } from '@/app/hooks/use-appoinment-hook';
 
