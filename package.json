@@ -6,12 +6,14 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "server": "json-server -w app/data/veterinary.json --port 8000"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.3.4",
     "date-fns": "^3.3.1",
     "date-fns-tz": "^2.0.0",
+    "json-server": "^1.0.0-alpha.23",
     "next": "14.1.0",
     "react": "^18",
     "react-dom": "^18",

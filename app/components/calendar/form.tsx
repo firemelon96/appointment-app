@@ -6,7 +6,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { AppointmentSchema, appointmentSchema } from '@/lib/types';
 import { v4 as uuidv4 } from 'uuid';
 import { useAppointmentContext } from '@/app/hooks/use-appoinment-hook';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 export const servicesENUM = {
   SERVICE_1: 'Consultation',
@@ -35,7 +35,16 @@ const defaultValues = {
   birthday: '',
 };
 
+type Veterinary = {
+  veterinary_name: string;
+  address: string;
+  building: string;
+  contact_number: string;
+  imgUrl: string;
+};
+
 export const Form = () => {
+  const [veterinary, setVeterinary] = useState<Veterinary[]>([]);
   const {
     state: { appointment },
     dispatch,
@@ -79,6 +88,29 @@ export const Form = () => {
     defaultValues: appointment ? defaultValuesForEditing : defaultValues,
   });
 
+  const initialValues = Object.values(servicesENUM);
+
+  useEffect(() => {
+    const fetchJSON = async () => {
+      try {
+        const res = await fetch('http://localhost:8000/veterinary');
+        const data = await res.json();
+        setVeterinary(data);
+      } catch (error) {
+        console.log('Failed to fetch the veterinary.json');
+      }
+    };
+    fetchJSON();
+  }, []);
+
+  useEffect(() => {
+    if (appointment) {
+      reset(defaultValuesForEditing);
+    } else {
+      reset(defaultValues);
+    }
+  }, [appointment, reset]);
+
   const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const selectedName = e.target.value;
     const selectedData = veterenary.find(
@@ -90,16 +122,6 @@ export const Form = () => {
     setValue('contact', selectedData?.contact_number || '');
     setValue('bldgUrl', selectedData?.imgUrl || '');
   };
-
-  const initialValues = Object.values(servicesENUM);
-
-  useEffect(() => {
-    if (appointment) {
-      reset(defaultValuesForEditing);
-    } else {
-      reset(defaultValues);
-    }
-  }, [appointment, reset]);
 
   const handleCancel = () => {
     dispatch({ type: 'OPEN_FORM' });
@@ -218,7 +240,7 @@ export const Form = () => {
             className='p-1 px-2 w-full rounded-xl'
             onChange={handleSelectChange}
           >
-            {veterenary.map((vet, i) => (
+            {veterinary?.map((vet, i) => (
               <option key={i} value={vet.veterinary_name}>
                 {vet.veterinary_name}
               </option>

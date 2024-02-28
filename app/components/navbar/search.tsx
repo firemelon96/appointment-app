@@ -3,23 +3,43 @@ import { useEvent } from '@/app/store/use-event';
 import Image from 'next/image';
 import { useState } from 'react';
 import { format } from 'date-fns';
+import { useAppointmentContext } from '@/app/hooks/use-appoinment-hook';
 
 export const Search = () => {
+  const {
+    state: { appointments },
+    dispatch,
+  } = useAppointmentContext();
   const [searchQuery, setsearchQuery] = useState('');
-  const [search, setSearch] = useState(false);
-  const { setDate } = useCalendar((state) => state);
+  // const [search, setSearch] = useState(false);
+  // const { setDate } = useCalendar((state) => state);
+  const [showResult, setshowResult] = useState(false);
 
-  const { searchEvents, events } = useEvent((state) => state);
+  // const { searchEvents, events } = useEvent((state) => state);
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setsearchQuery(e.target.value);
+    setshowResult(true);
   };
 
   const handleSearch = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault();
-    searchEvents(searchQuery);
-    setSearch(true);
   };
+
+  const handleClickResult = (startTime: string) => {
+    dispatch({ type: 'GOTO_RESULT', payload: startTime });
+    setshowResult(false);
+    console.log(appointments);
+    // console.log(date)
+  };
+
+  const filterSearch = appointments.filter(
+    (appointment) =>
+      appointment.clientName
+        .toLowerCase()
+        .includes(searchQuery.toLowerCase()) ||
+      appointment.service.toLowerCase().includes(searchQuery.toLowerCase())
+  );
 
   return (
     <>
@@ -38,15 +58,12 @@ export const Search = () => {
           <Image src='./icons/search.svg' width={20} height={20} alt='search' />
         </button>
       </form>
-      {search && (
-        <div className='absolute h-auto flex-grow bg-gray-200 top-20 w-3/4 p-5 shadow-lg rounded-md'>
+      {searchQuery.length > 0 && showResult && (
+        <div className='absolute z-40 h-auto flex-grow bg-gray-200 top-20 w-3/4 p-5 shadow-lg rounded-md'>
           <ul>
-            {events.map((event) => (
+            {filterSearch.map((event) => (
               <li
-                onClick={() => {
-                  setDate(event.startTime);
-                  setSearch(false);
-                }}
+                onClick={() => handleClickResult(event.startTime)}
                 key={event.id}
                 className={`flex cursor-pointer flex-col p-2 m-3 ${
                   event.service === 'Vaccination' &&

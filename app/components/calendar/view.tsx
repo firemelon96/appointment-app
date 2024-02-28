@@ -1,5 +1,5 @@
 import { addDays, format, isToday, subDays } from 'date-fns';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Button } from '../button';
 import DayView from './day-view';
 import { BackIcon } from '@/public/icons/back-icon';
@@ -9,12 +9,16 @@ import { useAppointmentContext } from '@/app/hooks/use-appoinment-hook';
 
 export const View = () => {
   const {
-    state: { isOpen },
+    state: { isOpen, date },
     dispatch,
   } = useAppointmentContext();
 
-  const { date } = useCalendar((state) => state);
+  console.log(date);
   const [currentDate, setCurrentDate] = useState(date);
+
+  useEffect(() => {
+    setCurrentDate(date);
+  }, [date]);
 
   const prev = () => {
     setCurrentDate(subDays(currentDate, 1));

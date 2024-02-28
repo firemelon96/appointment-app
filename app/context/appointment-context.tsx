@@ -42,7 +42,9 @@ type TAction =
   | { type: 'DELETE_APPOINTMENT'; payload: string }
   | { type: 'SET_OPEN_CARD'; payload: string }
   | { type: 'SET_COLLAPSE' }
-  | { type: 'EDIT_INFO' };
+  | { type: 'EDIT_INFO' }
+  | { type: 'SEARCH_APPOINTMENT'; payload: string }
+  | { type: 'GOTO_RESULT'; payload: string };
 
 const initValue: IState = {
   isOpen: false,
@@ -55,6 +57,90 @@ const initValue: IState = {
       service: 'Consultation',
       startTime: '2024-02-25T00:42',
       endTime: '2024-02-25T01:42',
+      clientName: 'Franky ski',
+      phone: '9323227432',
+      email: 'mgg@gmail.com',
+      address: 'Japan',
+      vetName: 'John Fins',
+      petName: 'geeorgy',
+      breed: 'azkal',
+      age: '27',
+      gender: 'male',
+      imageUrl: '/dog.jpeg',
+      vetAddress: '4517 Washington Avenue, Manchester, Kentucky 39495',
+      building: 'Green Bow Vett',
+      contact: '+63 0123 123',
+      bldgUrl: '/bldg.jpeg',
+      birthday: '2013-02-24',
+    },
+    {
+      id: '2',
+      service: 'Vaccination',
+      startTime: '2024-02-28T00:42',
+      endTime: '2024-02-28T01:42',
+      clientName: 'Marvin gaye',
+      phone: '9323227432',
+      email: 'mg@gmail.com',
+      address: 'sulaimaniyah',
+      vetName: 'John Fins',
+      petName: 'geeorgy',
+      breed: 'azkal',
+      age: '27',
+      gender: 'male',
+      imageUrl: '/dog.jpeg',
+      vetAddress: '4517 Washington Avenue, Manchester, Kentucky 39495',
+      building: 'Green Bow Vett',
+      contact: '+63 0123 123',
+      bldgUrl: '/bldg.jpeg',
+      birthday: '2013-02-24',
+    },
+    {
+      id: '3',
+      service: 'Consultation',
+      startTime: '2024-02-29T00:42',
+      endTime: '2024-02-29T01:42',
+      clientName: 'Marvin gaye',
+      phone: '9323227432',
+      email: 'mg@gmail.com',
+      address: 'sulaimaniyah',
+      vetName: 'John Fins',
+      petName: 'geeorgy',
+      breed: 'azkal',
+      age: '27',
+      gender: 'male',
+      imageUrl: '/dog.jpeg',
+      vetAddress: '4517 Washington Avenue, Manchester, Kentucky 39495',
+      building: 'Green Bow Vett',
+      contact: '+63 0123 123',
+      bldgUrl: '/bldg.jpeg',
+      birthday: '2013-02-24',
+    },
+    {
+      id: '5',
+      service: 'Vaccination',
+      startTime: '2024-02-29T03:42',
+      endTime: '2024-02-29T04:42',
+      clientName: 'Marvin gaye',
+      phone: '9323227432',
+      email: 'mg@gmail.com',
+      address: 'sulaimaniyah',
+      vetName: 'John Fins',
+      petName: 'geeorgy',
+      breed: 'azkal',
+      age: '27',
+      gender: 'male',
+      imageUrl: '/dog.jpeg',
+      vetAddress: '4517 Washington Avenue, Manchester, Kentucky 39495',
+      building: 'Green Bow Vett',
+      contact: '+63 0123 123',
+      bldgUrl: '/bldg.jpeg',
+      birthday: '2013-02-24',
+    },
+    {
+      id: '4',
+      service: 'Vaccination',
+      startTime: '2024-03-01T00:42',
+      endTime: '2024-03-01T01:42',
       clientName: 'Marvin gaye',
       phone: '9323227432',
       email: 'mg@gmail.com',
@@ -130,6 +216,24 @@ const reducerFn = (state: IState, action: TAction): IState => {
       return {
         ...state,
         isEditing: true,
+      };
+    case 'SEARCH_APPOINTMENT':
+      return {
+        ...state,
+        appointments: state.appointments.filter(
+          (appointment) =>
+            appointment.clientName
+              .toLowerCase()
+              .includes(action.payload.toLowerCase()) ||
+            appointment.service
+              .toLowerCase()
+              .includes(action.payload.toLowerCase())
+        ),
+      };
+    case 'GOTO_RESULT':
+      return {
+        ...state,
+        date: new Date(action.payload),
       };
     default:
       return state;
