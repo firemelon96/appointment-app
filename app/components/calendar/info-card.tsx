@@ -1,4 +1,3 @@
-import Image from 'next/image';
 import { Avatar } from '../avatar';
 import { MailIcon } from '@/public/icons/mail-icon';
 import { PinIcon } from '@/public/icons/pin-icon';

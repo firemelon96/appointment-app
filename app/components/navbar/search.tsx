@@ -9,11 +9,7 @@ export const Search = () => {
     dispatch,
   } = useAppointmentContext();
   const [searchQuery, setsearchQuery] = useState('');
-  // const [search, setSearch] = useState(false);
-  // const { setDate } = useCalendar((state) => state);
   const [showResult, setshowResult] = useState(false);
-
-  // const { searchEvents, events } = useEvent((state) => state);
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setsearchQuery(e.target.value);
@@ -28,7 +24,6 @@ export const Search = () => {
     dispatch({ type: 'GOTO_RESULT', payload: startTime });
     setshowResult(false);
     console.log(appointments);
-    // console.log(date)
   };
 
   const filterSearch = appointments.filter(

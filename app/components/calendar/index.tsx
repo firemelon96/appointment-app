@@ -1,5 +1,4 @@
 'use client';
-import { useAppointment } from '@/app/store/use-appointmen';
 import { View } from './view';
 import { Info } from './info';
 import { useAppointmentContext } from '@/app/hooks/use-appoinment-hook';
